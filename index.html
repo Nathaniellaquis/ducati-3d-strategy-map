@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/ducati_red_logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ducati Strategy Map - 3D Interactive</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- 3D Canvas Container -->
+      <div id="graph-container"></div>
+      
+      <!-- Tooltip -->
+      <div id="tooltip" class="tooltip hidden">
+        <h3 id="tooltip-title"></h3>
+        <p id="tooltip-type"></p>
+        <p id="tooltip-evidence"></p>
+      </div>
+      
+      <!-- Legend -->
+      <div id="legend">
+        <h3>Strategic Goals</h3>
+        <div class="legend-items">
+          <div class="legend-item" data-goal="all">
+            <span class="legend-color" style="background: #888"></span>
+            <span>Show All</span>
+          </div>
+          <div class="legend-item" data-goal="Performance\nEdge">
+            <span class="legend-color" style="background: #e15759"></span>
+            <span>Performance Edge</span>
+          </div>
+          <div class="legend-item" data-goal="Racing\nProgramme">
+            <span class="legend-color" style="background: #4e79a7"></span>
+            <span>Racing Programme</span>
+          </div>
+          <div class="legend-item" data-goal="Brand\nEcosystem">
+            <span class="legend-color" style="background: #59a14f"></span>
+            <span>Brand Ecosystem</span>
+          </div>
+          <div class="legend-item" data-goal="Operational\nModel">
+            <span class="legend-color" style="background: #f28e2b"></span>
+            <span>Operational Model</span>
+          </div>
+          <div class="legend-item" data-goal="Growth\nOptions">
+            <span class="legend-color" style="background: #9c755f"></span>
+            <span>Growth Options</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Title -->
+      <div id="title">
+        <h1>Ducati Strategy Map</h1>
+        <p>Interactive 3D Visualization</p>
+      </div>
+      
+      <!-- Instructions -->
+      <div id="instructions">
+        <p>🖱️ Click & drag to rotate • Scroll to zoom • Click nodes for details</p>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
