@@ -5,7 +5,7 @@ import ForceGraph3D from '3d-force-graph'
 import { Text } from 'troika-three-text'
 import { gsap } from 'gsap'
 import { graphData } from './data'
-import type { Node, Link } from './data'
+import type { Node } from './data'
 
 // Scene setup
 const container = document.getElementById('graph-container')!
