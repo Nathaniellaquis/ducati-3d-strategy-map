@@ -1,6 +1,6 @@
 export interface Node {
     id: string;
-    type: 'core' | 'goal' | 'initiative' | 'result';
+    type: 'core' | 'goal' | 'initiative';
     color?: string;
     evidence?: string;
 }
@@ -42,72 +42,6 @@ export const graphData: GraphData = {
             id: "Operational\nModel",
             type: "goal",
             color: "#f28e2b"
-        },
-        {
-            id: "Growth\nOptions",
-            type: "goal",
-            color: "#9c755f"
-        },
-        // Result nodes
-        {
-            id: "Price Premium\n30%+ vs. peers",
-            type: "result",
-            color: "#e15759",
-            evidence: "Ducati's average family-level premium ranged from 31% to 33% (Exhibit 11)"
-        },
-        {
-            id: "Sport-bike share\n4% → 6.7%",
-            type: "result",
-            color: "#e15759",
-            evidence: "World share of Ducati in its \"relevant market\" rose from 4% (1996) to 6.7% (2000) – Exhibit 3"
-        },
-        {
-            id: "27% cite racing\n#1 factor",
-            type: "result",
-            color: "#4e79a7",
-            evidence: "In a US survey, 27% of current Ducati owners selected racing presence as their primary purchase reason (p. 11)"
-        },
-        {
-            id: "Racing revenue\n€7.9m (2000)",
-            type: "result",
-            color: "#4e79a7",
-            evidence: "Racing division spend €10.2m, revenue €7.9m in 2000 (p. 11)"
-        },
-        {
-            id: "Repeat-purchase\nintent 55%",
-            type: "result",
-            color: "#59a14f",
-            evidence: "European brand–loyalty survey: ~55% repeat intention (Exhibit 16)"
-        },
-        {
-            id: "Accessories/Apparel\n≈7% of revenue",
-            type: "result",
-            color: "#59a14f",
-            evidence: "Related-product line grew from 2%→6.9% of sales 1996-2000 (Exhibit 12)"
-        },
-        {
-            id: "Materials cost\n-12 p.p.",
-            type: "result",
-            color: "#f28e2b",
-            evidence: "Motorcycle-materials cost fell from 55.8% to 43.4% of sales (-12.4 pp) 1996-2000 (Exhibit 12)"
-        },
-        {
-            id: "Units per worker\ndoubled",
-            type: "result",
-            color: "#f28e2b",
-            evidence: "Number of motorcycles produced per worker increased 2× after standardisation (p. 10)"
-        },
-        {
-            id: "EBITDA margin\n17% → 20% target",
-            type: "result",
-            color: "#9c755f",
-            evidence: "2000 EBITDA €60m on €379m rev. ≈ 17%; Minoli's explicit target = Harley's ~20% margin (p. 7 & Exhibit 1)"
-        },
-        {
-            id: "Revenues x4\n('96–'00)",
-            type: "result",
-            color: "#9c755f",
-            evidence: "Revenues quadrupled 1996 (€95m) → 2000 (€379m) – Exhibit 1 & p. 1"
         },
         // Initiative nodes
         {
@@ -222,21 +156,20 @@ export const graphData: GraphData = {
         { source: "World of Ducati\n(Core Value Proposition)", target: "Racing\nProgramme" },
         { source: "World of Ducati\n(Core Value Proposition)", target: "Brand\nEcosystem" },
         { source: "World of Ducati\n(Core Value Proposition)", target: "Operational\nModel" },
-        { source: "World of Ducati\n(Core Value Proposition)", target: "Growth\nOptions" },
+
+        // Direct connection between Racing and Performance
+        { source: "Racing\nProgramme", target: "Performance\nEdge" },
 
         // Initiatives to Goals
         { source: "World-Superbike\nWins", target: "Racing\nProgramme" },
         { source: "World-Superbike\nWins", target: "Performance\nEdge" },
         { source: "World-Superbike\nWins", target: "Brand\nEcosystem" },
-        { source: "World-Superbike\nWins", target: "Growth\nOptions" },
 
         { source: "Open Paddock\n(Fan Access)", target: "Racing\nProgramme" },
         { source: "Open Paddock\n(Fan Access)", target: "Brand\nEcosystem" },
-        { source: "Open Paddock\n(Fan Access)", target: "Growth\nOptions" },
 
         { source: "Tech Transfer\n(Track→Road)", target: "Performance\nEdge" },
         { source: "Tech Transfer\n(Track→Road)", target: "Racing\nProgramme" },
-        { source: "Tech Transfer\n(Track→Road)", target: "Growth\nOptions" },
 
         { source: "R&D + Desmo\n(HPE JV)", target: "Performance\nEdge" },
 
@@ -247,61 +180,36 @@ export const graphData: GraphData = {
         { source: "Lean / JIT\nDistrict", target: "Performance\nEdge" },
 
         { source: "87-90 % Outsourcing", target: "Operational\nModel" },
-        { source: "87-90 % Outsourcing", target: "Growth\nOptions" },
 
         { source: "Supplier\nRationalisation", target: "Operational\nModel" },
 
         { source: "Ducati Stores", target: "Brand\nEcosystem" },
-        { source: "Ducati Stores", target: "Growth\nOptions" },
 
         { source: "Accessories &\nApparel", target: "Brand\nEcosystem" },
-        { source: "Accessories &\nApparel", target: "Growth\nOptions" },
 
         { source: "Museum &\nTours", target: "Brand\nEcosystem" },
-        { source: "Museum &\nTours", target: "Growth\nOptions" },
 
         { source: "World Ducati\nWeekend", target: "Brand\nEcosystem" },
-        { source: "World Ducati\nWeekend", target: "Growth\nOptions" },
 
         { source: "Owners Clubs\n(DOC)", target: "Brand\nEcosystem" },
-        { source: "Owners Clubs\n(DOC)", target: "Growth\nOptions" },
 
         { source: "Ducati.com", target: "Brand\nEcosystem" },
-        { source: "Ducati.com", target: "Growth\nOptions" },
 
         { source: "Advertising &\nCo-Marketing", target: "Brand\nEcosystem" },
-        { source: "Advertising &\nCo-Marketing", target: "Growth\nOptions" },
 
         { source: "Sponsor / Engine\nSales", target: "Racing\nProgramme" },
-        { source: "Sponsor / Engine\nSales", target: "Growth\nOptions" },
 
         { source: "Limited-Edition\nOnline Models", target: "Brand\nEcosystem" },
         { source: "Limited-Edition\nOnline Models", target: "Performance\nEdge" },
-        { source: "Limited-Edition\nOnline Models", target: "Growth\nOptions" },
 
-        { source: "Product-Line\nBroadening", target: "Growth\nOptions" },
         { source: "Product-Line\nBroadening", target: "Performance\nEdge" },
+        { source: "Product-Line\nBroadening", target: "Brand\nEcosystem" },
 
-        { source: "Planned Cruiser\nEntry", target: "Growth\nOptions" },
         { source: "Planned Cruiser\nEntry", target: "Performance\nEdge" },
         { source: "Planned Cruiser\nEntry", target: "Brand\nEcosystem" },
 
-        { source: "Subsidiary\nExpansion", target: "Growth\nOptions" },
         { source: "Subsidiary\nExpansion", target: "Brand\nEcosystem" },
 
-        { source: "Community-Led\nMarketing", target: "Growth\nOptions" },
-        { source: "Community-Led\nMarketing", target: "Brand\nEcosystem" },
-
-        // Goals to Results
-        { source: "Performance\nEdge", target: "Price Premium\n30%+ vs. peers" },
-        { source: "Performance\nEdge", target: "Sport-bike share\n4% → 6.7%" },
-        { source: "Racing\nProgramme", target: "27% cite racing\n#1 factor" },
-        { source: "Racing\nProgramme", target: "Racing revenue\n€7.9m (2000)" },
-        { source: "Brand\nEcosystem", target: "Repeat-purchase\nintent 55%" },
-        { source: "Brand\nEcosystem", target: "Accessories/Apparel\n≈7% of revenue" },
-        { source: "Operational\nModel", target: "Materials cost\n-12 p.p." },
-        { source: "Operational\nModel", target: "Units per worker\ndoubled" },
-        { source: "Growth\nOptions", target: "EBITDA margin\n17% → 20% target" },
-        { source: "Growth\nOptions", target: "Revenues x4\n('96–'00)" }
+        { source: "Community-Led\nMarketing", target: "Brand\nEcosystem" }
     ]
 }; 

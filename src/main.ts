@@ -18,14 +18,12 @@ const Graph = (ForceGraph3D as any)()(container)
     const n = node as Node
     if (n.type === 'core') return 25
     if (n.type === 'goal') return 20
-    if (n.type === 'result') return 18
     return 15
   })
   .nodeColor((node: any) => {
     const n = node as Node
     if (n.type === 'core') return '#dddddd'
     if (n.type === 'goal') return n.color || '#888888'
-    if (n.type === 'result') return n.color || '#cccccc'
     return '#ffffff'
   })
   .nodeOpacity(0.9)
@@ -78,62 +76,33 @@ Graph.nodeThreeObject((node: any) => {
   const n = node as Node
   const group = new THREE.Group()
 
-  if (n.type === 'result') {
-    // Box geometry for result nodes
-    const geometry = new THREE.BoxGeometry(20, 15, 15)
-    const material = new THREE.MeshPhongMaterial({
-      color: n.color || 0xcccccc,
-      emissive: n.color || 0x000000,
-      emissiveIntensity: 0.4,
-      shininess: 150,
-      specular: 0x444444,
-      transparent: true,
-      opacity: 0.9
-    })
+  // Sphere geometry for all nodes
+  const geometry = new THREE.SphereGeometry(
+    n.type === 'core' ? 15 : n.type === 'goal' ? 12 : 8,
+    16,
+    16
+  )
 
-    const box = new THREE.Mesh(geometry, material)
-    box.userData = { node: n }
-    group.add(box)
+  const material = new THREE.MeshPhongMaterial({
+    color: n.type === 'core' ? 0xdddddd : n.type === 'goal' ? n.color : 0xffffff,
+    emissive: n.type === 'goal' ? n.color : 0x000000,
+    emissiveIntensity: 0.2,
+    shininess: 100,
+    specular: 0x222222
+  })
 
-    // Remove edge lines - they look ugly
-    // const edges = new THREE.EdgesGeometry(geometry)
-    // const lineMaterial = new THREE.LineBasicMaterial({
-    //   color: 0xffffff,
-    //   linewidth: 2,
-    //   transparent: true,
-    //   opacity: 0.8
-    // })
-    // const edgeLines = new THREE.LineSegments(edges, lineMaterial)
-    // group.add(edgeLines)
-  } else {
-    // Sphere geometry for other nodes
-    const geometry = new THREE.SphereGeometry(
-      n.type === 'core' ? 15 : n.type === 'goal' ? 12 : 8,
-      16,
-      16
-    )
-
-    const material = new THREE.MeshPhongMaterial({
-      color: n.type === 'core' ? 0xdddddd : n.type === 'goal' ? n.color : 0xffffff,
-      emissive: n.type === 'goal' ? n.color : 0x000000,
-      emissiveIntensity: 0.2,
-      shininess: 100,
-      specular: 0x222222
-    })
-
-    const sphere = new THREE.Mesh(geometry, material)
-    sphere.userData = { node: n }
-    group.add(sphere)
-  }
+  const sphere = new THREE.Mesh(geometry, material)
+  sphere.userData = { node: n }
+  group.add(sphere)
 
   // Text label
   const text = new Text()
   text.text = n.id.replace(/\n/g, ' ')
-  text.fontSize = n.type === 'core' ? 5 : n.type === 'goal' ? 4 : n.type === 'result' ? 3.5 : 3
+  text.fontSize = n.type === 'core' ? 5 : n.type === 'goal' ? 4 : 3
   text.color = 0xffffff
   text.anchorX = 'center'
   text.anchorY = 'middle'
-  text.position.y = n.type === 'core' ? 25 : n.type === 'goal' ? 20 : n.type === 'result' ? 18 : 15
+  text.position.y = n.type === 'core' ? 25 : n.type === 'goal' ? 20 : 15
   text.outlineWidth = '5%'
   text.outlineColor = 0x000000
 
@@ -183,7 +152,6 @@ function handleNodeHover(node: any) {
       }
       if (node.type === 'core') return '#dddddd'
       if (node.type === 'goal') return node.color || '#888888'
-      if (node.type === 'result') return node.color || '#cccccc'
       return '#ffffff'
     })
 
@@ -208,7 +176,6 @@ function handleNodeHover(node: any) {
       const n = node as Node
       if (n.type === 'core') return '#dddddd'
       if (n.type === 'goal') return n.color || '#888888'
-      if (n.type === 'result') return n.color || '#cccccc'
       return '#ffffff'
     })
 

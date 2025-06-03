@@ -189,6 +189,24 @@ body {
   border-radius: 8px;
 }
 
+/* Source Citation */
+#source-citation {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 12px;
+  z-index: 100;
+  pointer-events: none;
+}
+
+#source-citation p {
+  margin: 0;
+  font-style: italic;
+}
+
+/* Loading indicator */
+
 /* Responsive */
 @media (max-width: 768px) {
   #legend {
