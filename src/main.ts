@@ -84,27 +84,27 @@ Graph.nodeThreeObject((node: any) => {
     const material = new THREE.MeshPhongMaterial({
       color: n.color || 0xcccccc,
       emissive: n.color || 0x000000,
-      emissiveIntensity: 0.3,
-      shininess: 100,
-      specular: 0x222222,
+      emissiveIntensity: 0.4,
+      shininess: 150,
+      specular: 0x444444,
       transparent: true,
-      opacity: 0.85
+      opacity: 0.9
     })
 
     const box = new THREE.Mesh(geometry, material)
     box.userData = { node: n }
     group.add(box)
 
-    // Add edge lines to emphasize box shape
-    const edges = new THREE.EdgesGeometry(geometry)
-    const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0xffffff,
-      linewidth: 2,
-      transparent: true,
-      opacity: 0.8
-    })
-    const edgeLines = new THREE.LineSegments(edges, lineMaterial)
-    group.add(edgeLines)
+    // Remove edge lines - they look ugly
+    // const edges = new THREE.EdgesGeometry(geometry)
+    // const lineMaterial = new THREE.LineBasicMaterial({
+    //   color: 0xffffff,
+    //   linewidth: 2,
+    //   transparent: true,
+    //   opacity: 0.8
+    // })
+    // const edgeLines = new THREE.LineSegments(edges, lineMaterial)
+    // group.add(edgeLines)
   } else {
     // Sphere geometry for other nodes
     const geometry = new THREE.SphereGeometry(
@@ -311,15 +311,31 @@ function showAllNodes() {
 }
 
 function filterByGoal(goalId: string) {
-  // Find all nodes connected to this goal
+  // Find all nodes connected to this goal (including results)
   const connectedNodeIds = new Set<string>()
   connectedNodeIds.add(goalId)
   connectedNodeIds.add("World of Ducati\n(Core Value Proposition)")
 
+  // First pass: Find all nodes directly connected to the goal
   graphData.links.forEach(link => {
-    if (link.source === goalId || link.target === goalId) {
-      connectedNodeIds.add(link.source)
+    if (link.source === goalId) {
       connectedNodeIds.add(link.target)
+    }
+    if (link.target === goalId) {
+      connectedNodeIds.add(link.source)
+    }
+  })
+
+  // Second pass: Find result nodes connected to the goal
+  // This ensures we catch all result boxes that come FROM the goal
+  const initialSize = connectedNodeIds.size
+  graphData.links.forEach(link => {
+    // If the source is already in our set, add the target
+    if (connectedNodeIds.has(link.source)) {
+      const targetNode = graphData.nodes.find(n => n.id === link.target)
+      if (targetNode && targetNode.type === 'result') {
+        connectedNodeIds.add(link.target)
+      }
     }
   })
 
