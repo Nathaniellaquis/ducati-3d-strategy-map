@@ -163,11 +163,15 @@ function handleNodeHover(node: any) {
     connectedNodeIds.add(hoveredNode.id)
 
     graphData.links.forEach(link => {
-      if (link.source === hoveredNode!.id) {
-        connectedNodeIds.add(link.target)
+      // Handle both string IDs and object references
+      const sourceId = typeof link.source === 'string' ? link.source : (link.source as any).id
+      const targetId = typeof link.target === 'string' ? link.target : (link.target as any).id
+
+      if (sourceId === hoveredNode!.id) {
+        connectedNodeIds.add(targetId)
       }
-      if (link.target === hoveredNode!.id) {
-        connectedNodeIds.add(link.source)
+      if (targetId === hoveredNode!.id) {
+        connectedNodeIds.add(sourceId)
       }
     })
 
@@ -185,8 +189,12 @@ function handleNodeHover(node: any) {
 
     // Highlight connected links
     Graph.linkOpacity((link: any) => {
-      const l = link as Link
-      if (l.source === hoveredNode!.id || l.target === hoveredNode!.id) {
+      const l = link as any
+      // Handle both string IDs and object references
+      const sourceId = typeof l.source === 'string' ? l.source : l.source.id
+      const targetId = typeof l.target === 'string' ? l.target : l.target.id
+
+      if (sourceId === hoveredNode!.id || targetId === hoveredNode!.id) {
         return 0.8
       }
       return 0.1
@@ -241,7 +249,7 @@ function updateTooltipPosition() {
 }
 
 // Animate tooltip position on render
-Graph.onEngineFrame(() => {
+Graph.onEngineTick(() => {
   if (hoveredNode) {
     updateTooltipPosition()
   }
@@ -313,41 +321,45 @@ function showAllNodes() {
 function filterByGoal(goalId: string) {
   // Find all nodes connected to this goal (including results)
   const connectedNodeIds = new Set<string>()
+
+  // Always include the selected goal and core node
   connectedNodeIds.add(goalId)
   connectedNodeIds.add("World of Ducati\n(Core Value Proposition)")
 
-  // First pass: Find all nodes directly connected to the goal
+  // Find all nodes connected to or from the goal
   graphData.links.forEach(link => {
-    if (link.source === goalId) {
-      connectedNodeIds.add(link.target)
+    // Handle both string IDs and object references
+    const sourceId = typeof link.source === 'string' ? link.source : (link.source as any).id
+    const targetId = typeof link.target === 'string' ? link.target : (link.target as any).id
+
+    // If the goal is the source, add the target
+    if (sourceId === goalId) {
+      connectedNodeIds.add(targetId)
     }
-    if (link.target === goalId) {
-      connectedNodeIds.add(link.source)
+    // If the goal is the target, add the source
+    if (targetId === goalId) {
+      connectedNodeIds.add(sourceId)
     }
   })
 
-  // Second pass: Find result nodes connected to the goal
-  // This ensures we catch all result boxes that come FROM the goal
-  const initialSize = connectedNodeIds.size
-  graphData.links.forEach(link => {
-    // If the source is already in our set, add the target
-    if (connectedNodeIds.has(link.source)) {
-      const targetNode = graphData.nodes.find(n => n.id === link.target)
-      if (targetNode && targetNode.type === 'result') {
-        connectedNodeIds.add(link.target)
-      }
-    }
-  })
+  // Debug log to see what's being filtered
+  console.log('Filtering for goal:', goalId)
+  console.log('Connected nodes:', Array.from(connectedNodeIds))
 
   // Update visibility
   Graph.nodeOpacity((node: any) => {
     const n = node as Node
-    return connectedNodeIds.has(n.id) ? 0.9 : 0.1
+    const isConnected = connectedNodeIds.has(n.id)
+    return isConnected ? 0.9 : 0.1
   })
 
   Graph.linkOpacity((link: any) => {
-    const l = link as Link
-    return (connectedNodeIds.has(l.source) && connectedNodeIds.has(l.target)) ? 0.4 : 0.05
+    const l = link as any
+    // Handle both string IDs and object references
+    const sourceId = typeof l.source === 'string' ? l.source : l.source.id
+    const targetId = typeof l.target === 'string' ? l.target : l.target.id
+    const bothConnected = connectedNodeIds.has(sourceId) && connectedNodeIds.has(targetId)
+    return bothConnected ? 0.4 : 0.05
   })
 }
 
@@ -359,7 +371,7 @@ window.addEventListener('resize', () => {
 
 // Add some ambient animation
 let time = 0
-Graph.onEngineFrame(() => {
+Graph.onEngineTick(() => {
   time += 0.001
 
   // Gentle rotation of the entire scene
