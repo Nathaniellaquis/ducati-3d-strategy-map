@@ -2,6 +2,10 @@
 
 A stunning 3D interactive visualization of Ducati's strategic initiatives, built with Three.js and TypeScript.
 
+## 🚀 Live Demo
+
+View the live visualization at: **[https://ducati-3d-strategy-map.vercel.app/](https://ducati-3d-strategy-map.vercel.app/)**
+
 ## Features
 
 - **3D Force-Directed Graph**: Dynamic node layout with physics simulation
